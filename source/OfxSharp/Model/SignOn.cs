@@ -17,7 +17,8 @@ namespace OfxSharp
                 statusSeverity: status        .RequireSingleElementChildText( "SEVERITY" ),
                 dtServer      : signOnResponse.RequireSingleElementChildText( "DTSERVER" ).RequireOptionalParseOfxDateTime(),
                 language      : signOnResponse.RequireSingleElementChildText( "LANGUAGE" ),
-                intuBid       : signOnResponse.GetSingleElementChildOrNull( "INTU.BID", allowDotsInElementName: true )?.FirstChild.InnerText ?? null,
+                intuBid       : signOnResponse.GetSingleElementChildOrNull( "INTU.BID", allowDotsInElementName: true )?.RequireSingleTextChildNode() ?? null,
+                intuUserid    : signOnResponse.GetSingleElementChildOrNull( "INTU.USERID", allowDotsInElementName: true )?.RequireSingleTextChildNode() ?? null,
                 institution   : FinancialInstitution.FromXmlElementOrNull( signOnResponse.GetSingleElementChildOrNull("FI") )
             );
         }
@@ -28,6 +29,7 @@ namespace OfxSharp
             DateTimeOffset?      dtServer,
             String               language,
             String               intuBid     = null,
+            String               intuUserid  = null,
             FinancialInstitution institution = null
         )
         {
@@ -36,6 +38,7 @@ namespace OfxSharp
             this.DTServer       = dtServer;
             this.Language       = language;
             this.IntuBid        = intuBid;
+            this.IntuUserid     = intuUserid;
             this.Institution    = institution;
         }
 
